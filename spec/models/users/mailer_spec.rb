@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe UserMailer, type: :mailer do
+RSpec.describe Users::Mailer, type: :mailer do
   describe "welcome" do
     it "is created with correct values" do
       # Given
       user = User.create(name: "any name", email: "email@email.com", token: SecureRandom.uuid, password_digest: Digest::SHA256.hexdigest('password'))
 
       # When
-      email = UserMailer.with(user: user).welcome
+      email = Users::Mailer.with(user: user).welcome
       email.deliver_now
 
       # Then
