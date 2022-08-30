@@ -3,8 +3,6 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
-  rescue_from ActionController::ParameterMissing, with: :show_parameter_missing_error
-
   protected
 
     def authenticate_user

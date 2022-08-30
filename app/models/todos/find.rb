@@ -9,7 +9,7 @@ module Todos
 
       return Failure :not_found, result: { todo: { id: 'not found' } } if todo.nil?
 
-      Success result: { todo: todo.serialize_as_json }
+      Success :todo_found, result: { todo: todo }
     end
   end
 end
