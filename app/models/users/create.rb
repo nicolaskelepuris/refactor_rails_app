@@ -26,7 +26,7 @@ module Users
       end
 
       def create_user
-        user = User.create(
+        user = ::User.create(
           name: name,
           email: email,
           token: ::SecureRandom.uuid,
@@ -39,7 +39,7 @@ module Users
       end
 
       def send_welcome_email(user:, **)
-        UserMailer.with(user: user).welcome.deliver_later
+        ::UserMailer.with(user: user).welcome.deliver_later
         
         return Success :welcome_email_sent
       end
