@@ -8,10 +8,10 @@ module Todos
     def call!
       todos =
         case status
-        when 'overdue' then Todo.overdue
-        when 'completed' then Todo.completed
-        when 'uncompleted' then Todo.uncompleted
-        else Todo.all
+        when 'overdue' then ::Todo.overdue
+        when 'completed' then ::Todo.completed
+        when 'uncompleted' then ::Todo.uncompleted
+        else ::Todo.all
         end
 
       Success result: { todos: todos.where(user_id: user_id).map(&:serialize_as_json) }
