@@ -19,6 +19,9 @@ class TodosController < ApplicationController
       on.failure(:unprocessable_entity) { |result| render status: 422, json: { todo: result[:todo] } }
       on.success { |result| render status: 201, json: { todo: result[:todo] } }
     end
+
+  rescue ActionController::ParameterMissing => exception
+    render_bad_request(exception.message)
   end
 
   def show
@@ -47,6 +50,9 @@ class TodosController < ApplicationController
       on.failure(:unprocessable_entity) { |result| render status: 422, json: { todo: result[:todo] } }
       on.success { |result| render status: 200, json: { todo: result[:todo] } }
     end
+
+  rescue ActionController::ParameterMissing => exception
+    render_bad_request(exception.message)
   end
 
   def complete
@@ -67,5 +73,9 @@ class TodosController < ApplicationController
 
     def todo_params
       params.require(:todo).permit(:title, :due_at)
+    end
+
+    def render_bad_request(message)
+      render status: 400, json: { error: message }
     end
 end
