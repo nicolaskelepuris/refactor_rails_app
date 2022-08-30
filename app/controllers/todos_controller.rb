@@ -24,12 +24,14 @@ class TodosController < ApplicationController
   end
 
   def create
-    todo = current_user.todos.create(todo_params)
-
-    if todo.valid?
-      render_json(201, todo: todo.serialize_as_json)
-    else
-      render_json(422, todo: todo.errors.as_json)
+    input = {
+      user_id: current_user.id,
+      title: todo_params[:title],
+      due_at: todo_params[:due_at]
+    }
+    ::Todos::Create.call(input) do |on|
+      on.failure(:unprocessable_entity) { |result| render status: 422, json: { todo: result[:todo] } }
+      on.success { |result| render status: 201, json: { todo: result[:todo] } }
     end
   end
 
