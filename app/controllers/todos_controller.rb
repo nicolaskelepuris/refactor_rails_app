@@ -64,9 +64,10 @@ class TodosController < ApplicationController
   end
 
   def uncomplete
-    @todo.uncomplete!
-
-    render_json(200, todo: @todo.serialize_as_json)
+    ::Todos::Uncomplete.call(id: params[:id], user_id: current_user.id) do |on|
+      on.failure(:not_found) { |result| render status: 404, json: { todo: result[:todo] } }
+      on.success { |result| render status: 200, json: { todo: result[:todo] } }
+    end
   end
 
   private
