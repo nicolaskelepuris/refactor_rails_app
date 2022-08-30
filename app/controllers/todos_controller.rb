@@ -3,12 +3,6 @@
 class TodosController < ApplicationController
   before_action :authenticate_user
 
-  before_action :set_todo, only: %i[show destroy update complete uncomplete]
-
-  rescue_from ActiveRecord::RecordNotFound do
-    render_json(404, todo: { id: 'not found' })
-  end
-
   def index
     ::Todos::List.call(status: params[:status], user_id: current_user.id) do |on|
       on.success { |result| render status: 200, json: { todos: result[:todos] } }
@@ -73,9 +67,5 @@ class TodosController < ApplicationController
 
     def todo_params
       params.require(:todo).permit(:title, :due_at)
-    end
-
-    def set_todo
-      @todo = current_user.todos.find(params[:id])
     end
 end
