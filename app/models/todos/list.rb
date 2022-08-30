@@ -14,7 +14,7 @@ module Todos
         else ::Todo.all
         end
 
-      Success result: { todos: todos.where(user_id: user_id).map(&:serialize_as_json) }
+      Success result: { todos: todos.where(user_id: user_id) }
     end
   end
 end

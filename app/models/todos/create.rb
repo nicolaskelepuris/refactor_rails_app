@@ -9,7 +9,7 @@ module Todos
 
       return Failure :unprocessable_entity, result: { todo: todo.errors.messages } unless todo.valid?
 
-      Success result: { todo: todo.serialize_as_json }
+      return Success :todo_created, result: { todo: todo }
     end
   end
 end
