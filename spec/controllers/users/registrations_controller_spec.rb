@@ -159,7 +159,7 @@ RSpec.describe Users::RegistrationsController, type: :controller do
 
         expect(job["job_class"]).to eq("ActionMailer::MailDeliveryJob")
 
-        expect(job["arguments"][0..1].join('#')).to eq("UserMailer#welcome")        
+        expect(job["arguments"][0..1].join('#')).to eq("Users::Mailer#welcome")        
 
         job_user_gid = GlobalID.parse(job["arguments"].last.dig("params", "user", "_aj_globalid"))
         expect(user_id.to_s).to eq(job_user_gid.model_id)
