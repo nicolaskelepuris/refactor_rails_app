@@ -3,9 +3,9 @@
 class Todo < ApplicationRecord
   belongs_to :user
 
-  scope :overdue, -> { uncompleted.where('due_at <= ?', Time.current) }
+  scope :overdue, -> { where(completed_at: nil).where('due_at <= :now', { now: Time.current }) }
   scope :completed, -> { where.not(completed_at: nil) }
-  scope :uncompleted, -> { where(completed_at: nil) }
+  scope :uncompleted, -> { where(completed_at: nil).where('due_at = :empty or due_at > :now', { empty: nil, now: Time.current }) }
 
   validates :title, presence: true
   validates :due_at, presence: true, allow_nil: true
